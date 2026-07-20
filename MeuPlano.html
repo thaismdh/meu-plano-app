@@ -37,7 +37,6 @@
   .card{background:var(--card);border-radius:16px;padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
   .section-title{font-size:13px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:.6px;margin:6px 4px 10px}
 
-  /* Protein ring */
   .ring-wrap{display:flex;align-items:center;gap:18px}
   .ring{position:relative;width:120px;height:120px;flex:none}
   .ring svg{transform:rotate(-90deg)}
@@ -59,7 +58,6 @@
   .meal-item .g{font-size:13px;font-weight:700;color:var(--green);flex:none}
   .meal-item.done .txt b{text-decoration:line-through;color:var(--grey)}
 
-  /* Menu */
   .day-pills{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:none}
   .day-pills::-webkit-scrollbar{display:none}
   .pill{flex:none;padding:8px 14px;border-radius:20px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--grey);cursor:pointer;box-shadow:var(--shadow)}
@@ -70,7 +68,6 @@
   .menu-block{padding:12px 0;border-bottom:1px solid var(--line)}
   .menu-block:last-child{border-bottom:none}
 
-  /* Progress */
   .field{display:flex;gap:10px;margin-bottom:10px}
   .field label{flex:1;font-size:13px;color:var(--grey);display:flex;flex-direction:column;gap:5px}
   .field input{padding:11px;border:1px solid var(--line);border-radius:11px;font-size:16px;background:#fff;width:100%}
@@ -84,13 +81,11 @@
   .log-row .del{color:#c62828;font-size:12px;cursor:pointer;opacity:.6;margin-left:10px}
   #chart{width:100%;height:150px;display:block}
 
-  /* Shopping */
   .shop-item{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--line);font-size:14.5px}
   .shop-item:last-child{border-bottom:none}
   .shop-item.on span{text-decoration:line-through;color:var(--grey)}
   .cat-h{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin:14px 4px 4px}
 
-  /* Nav */
   nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;
     box-shadow:0 -2px 16px rgba(0,0,0,.06);padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:50}
   nav button{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;color:var(--grey);cursor:pointer;padding:2px}
@@ -104,7 +99,7 @@
 <body>
 <header>
   <h1>🥗 Meu Plano</h1>
-  <p id="hdr-sub">Recomposição · meta 120g proteína/dia</p>
+  <p id="hdr-sub">Recomposição · menopausa · proteína em cada refeição</p>
 </header>
 
 <div class="wrap">
@@ -129,14 +124,23 @@
       <div class="goalbar">Marque as refeições abaixo conforme for comendo.</div>
     </div>
 
+    <div class="tipbox">🦴 <b>Menopausa:</b> mire ~30g de proteína por refeição — o corpo precisa de mais estímulo pra manter músculo agora. E capriche no cálcio (abaixo) pra proteger os ossos.</div>
+
     <div class="section-title">Refeições de hoje</div>
     <div class="card" id="today-meals"></div>
+
+    <div class="section-title">Cálcio do dia 🦴</div>
+    <div class="card">
+      <div id="calcium-list"></div>
+      <div class="goalbar" id="cal-status" style="margin-top:8px"></div>
+    </div>
+
     <div class="reset" onclick="resetDay()">Zerar o dia</div>
   </section>
 
   <!-- CARDÁPIO -->
   <section id="tab-menu" class="tab-page">
-    <div class="tipbox">💡 Cardápio rotativo pra não enjoar. Peixe 5x/semana, carbo forte perto do treino, jantar mais leve. Toque nos dias pra ver as opções.</div>
+    <div class="tipbox">💡 Cardápio rotativo pra não enjoar. Peixe 5x/semana, carbo forte perto do treino, jantar leve. Toque nos dias pra ver as opções.</div>
     <div class="day-pills" id="day-pills"></div>
     <div id="menu-content"></div>
   </section>
@@ -165,6 +169,13 @@
       <div id="prog-list"><div class="empty">Nada registrado ainda.</div></div>
     </div>
     <div class="tipbox">A balança é só um dado. Fotos, medidas e força no treino contam mais na recomposição. 🌱</div>
+
+    <div class="card">
+      <div class="section-title" style="margin-top:0">Exames pra pedir 🩺</div>
+      <div id="exam-list"></div>
+      <div class="goalbar" style="margin-top:8px">Na menopausa e sem carne vermelha, vale checar estes com seu médico. Marque conforme for fazendo.</div>
+    </div>
+    <div class="tipbox">⚠️ Este app é um guia, não substitui médico nem nutricionista. Use os exames pra conversar com um(a) profissional.</div>
   </section>
 
   <!-- COMPRAS -->
@@ -193,11 +204,10 @@ const todayKey = ()=> new Date().toISOString().slice(0,10);
 
 /* ---------- MEALS (today tracker) ---------- */
 const MEALS = [
-  {id:'cafe', name:'Café da manhã', desc:'Ex.: 3 ovos + mamão', g:20},
-  {id:'pos',  name:'Pós-treino (whey)', desc:'1 dose de whey', g:24},
-  {id:'almoco',name:'Almoço', desc:'Peixe + carbo + vegetais', g:38},
-  {id:'lanche',name:'Lanche da tarde', desc:'Iogurte grego + fruta', g:12},
-  {id:'jantar',name:'Jantar', desc:'Proteína + muito vegetal', g:30},
+  {id:'cafe', name:'Café da manhã', desc:'Iogurte + whey + fruta + aveia', g:30},
+  {id:'almoco',name:'Almoço', desc:'Peixe + carbo + vegetais', g:40},
+  {id:'lanche',name:'Lanche da tarde', desc:'Iogurte grego + fruta', g:15},
+  {id:'jantar',name:'Jantar', desc:'Proteína + muito vegetal', g:35},
 ];
 function renderToday(){
   const day = store.get('day_'+todayKey(), {});
@@ -207,13 +217,13 @@ function renderToday(){
     const on = !!day[m.id];
     const row = document.createElement('div');
     row.className = 'meal-item'+(on?' done':'');
-    row.innerHTML = `<div class="check ${on?'on':''}">${on?'✓':''}</div>
-      <div class="txt"><b>${m.name}</b><small>${m.desc}</small></div>
-      <div class="g">+${m.g}g</div>`;
-    row.querySelector('.check').onclick = ()=>{
+    row.innerHTML = '<div class="check '+(on?'on':'')+'">'+(on?'✓':'')+'</div>'+
+      '<div class="txt"><b>'+m.name+'</b><small>'+m.desc+'</small></div>'+
+      '<div class="g">+'+m.g+'g</div>';
+    row.querySelector('.check').onclick = function(){
       day[m.id] = !day[m.id];
       store.set('day_'+todayKey(), day);
-      renderToday(); updateRing();
+      renderToday();
     };
     el.appendChild(row);
   });
@@ -221,7 +231,7 @@ function renderToday(){
 }
 function currentProtein(){
   const day = store.get('day_'+todayKey(), {});
-  return MEALS.reduce((s,m)=> s + (day[m.id]? m.g:0), 0);
+  return MEALS.reduce(function(s,m){ return s + (day[m.id]? m.g:0); }, 0);
 }
 function updateRing(){
   const p = currentProtein();
@@ -235,58 +245,99 @@ function updateRing(){
   else if(p>=GOAL*0.6){ msg.textContent='Quase lá! 🔥'; sub.textContent='Faltam '+left+'g de proteína.'; }
   else { msg.textContent='Bora bater a meta! 💪'; sub.textContent='Faltam '+left+'g de proteína hoje.'; }
 }
-function resetDay(){ if(confirm('Zerar as marcações de hoje?')){ store.set('day_'+todayKey(),{}); renderToday(); } }
+function resetDay(){ if(confirm('Zerar as marcações de hoje?')){ store.set('day_'+todayKey(),{}); store.set('cal_'+todayKey(),{}); renderToday(); renderCalcium(); } }
+
+/* ---------- CALCIUM (today) ---------- */
+const CAL_SOURCES = [
+  {id:'iog',  name:'Iogurte', desc:'~250mg por pote'},
+  {id:'couve',name:'Couve refogada', desc:'ótima fonte vegetal'},
+  {id:'leite',name:'Leite de amêndoas fortificado', desc:'confira o rótulo'},
+  {id:'gerg', name:'Gergelim / tahine', desc:'no prato ou pão'},
+  {id:'peixe',name:'Sardinha ou salmão', desc:'com espinha = mais cálcio'},
+  {id:'broc', name:'Brócolis', desc:'bônus de cálcio e fibra'},
+];
+const CAL_GOAL = 3;
+function renderCalcium(){
+  const day = store.get('cal_'+todayKey(), {});
+  const el = document.getElementById('calcium-list'); el.innerHTML='';
+  CAL_SOURCES.forEach(function(s){
+    const on = !!day[s.id];
+    const row = document.createElement('div');
+    row.className='meal-item'+(on?' done':'');
+    row.innerHTML='<div class="check '+(on?'on':'')+'">'+(on?'✓':'')+'</div>'+
+      '<div class="txt"><b>'+s.name+'</b><small>'+s.desc+'</small></div>';
+    row.querySelector('.check').onclick=function(){ day[s.id]=!day[s.id]; store.set('cal_'+todayKey(),day); renderCalcium(); };
+    el.appendChild(row);
+  });
+  const n = CAL_SOURCES.reduce(function(s,x){ return s + (day[x.id]?1:0); }, 0);
+  const st = document.getElementById('cal-status');
+  if(n>=CAL_GOAL) st.innerHTML='✅ '+n+' fontes hoje — ossos protegidos!';
+  else st.innerHTML='🦴 '+n+' de '+CAL_GOAL+' fontes de cálcio. Faltam '+(CAL_GOAL-n)+'.';
+}
+
+/* ---------- EXAMS (checkup) ---------- */
+const EXAMS = ['Vitamina D','Vitamina B12','Cálcio','Ferritina / ferro','TSH (tireoide)','Perfil lipídico (colesterol)'];
+function renderExams(){
+  const done = store.get('exams',{});
+  const el = document.getElementById('exam-list'); el.innerHTML='';
+  EXAMS.forEach(function(e){
+    const on=!!done[e];
+    const row=document.createElement('div'); row.className='shop-item'+(on?' on':'');
+    row.innerHTML='<div class="check '+(on?'on':'')+'">'+(on?'✓':'')+'</div><span>'+e+'</span>';
+    row.onclick=function(){ done[e]=!done[e]; store.set('exams',done); renderExams(); };
+    el.appendChild(row);
+  });
+}
 
 /* ---------- MENU ---------- */
 const DAYS = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
 const MENU = {
-  Seg:{cafe:['3 ovos mexidos + mamão + café','~20g · 300 kcal'],
+  Seg:{cafe:['Overnight oats: aveia + iogurte + linhaça + banana + whey','~28g · 350 kcal'],
        almoco:['Salmão grelhado + arroz integral + couve refogada + salada + beterraba','~40g · 550 kcal'],
-       lanche:['Iogurte grego + banana + castanhas','~15g · 220 kcal'],
+       lanche:['Iogurte grego + maçã + sementes','~15g · 220 kcal'],
        jantar:['Tilápia + purê de abóbora + brócolis + salada verde','~32g · 380 kcal']},
-  Ter:{cafe:['Omelete de 2 ovos com queijo + 1 fatia pão integral + fruta','~22g · 340 kcal'],
+  Ter:{cafe:['Iogurte grego + aveia + mamão + linhaça + whey','~28g · 340 kcal'],
        almoco:['Tilápia + batata doce + couve + salada + beterraba','~38g · 520 kcal'],
        lanche:['Whey pós-treino + 1 fruta','~26g · 200 kcal'],
        jantar:['2 ovos + grão de bico + abóbora + muita folha','~28g · 360 kcal']},
-  Qua:{cafe:['Vitamina: whey + banana + aveia + leite','~28g · 320 kcal'],
+  Qua:{cafe:['Vitamina: whey + banana + aveia + leite de amêndoas + linhaça','~28g · 320 kcal'],
        almoco:['Salmão + arroz integral + brócolis + salada','~40g · 540 kcal'],
        lanche:['Iogurte grego + pasta de amendoim','~16g · 230 kcal'],
        jantar:['Frango desfiado + salada grande + purê de abóbora','~34g · 380 kcal']},
-  Qui:{cafe:['Tapioca com ovo e queijo + fruta','~20g · 330 kcal'],
+  Qui:{cafe:['Overnight oats: aveia + iogurte + maçã + sementes + whey','~28g · 350 kcal'],
        almoco:['Tilápia + batata doce + couve + beterraba + salada','~38g · 520 kcal'],
-       lanche:['Ovo cozido + fruta','~8g · 150 kcal'],
+       lanche:['Iogurte grego + fruta','~12g · 180 kcal'],
        jantar:['Sopa de legumes com grão de bico + peixe desfiado','~26g · 340 kcal']},
-  Sex:{cafe:['3 ovos + mamão + café','~20g · 300 kcal'],
+  Sex:{cafe:['Iogurte grego + aveia + mamão + linhaça + whey','~28g · 340 kcal'],
        almoco:['Tilápia + arroz integral + couve + salada','~38g · 510 kcal'],
        lanche:['Whey pós-treino','~24g · 130 kcal'],
        jantar:['Omelete de vegetais (2 ovos) + salada + abóbora','~26g · 320 kcal']},
-  'Sáb':{cafe:['Iogurte grego + aveia + banana + mel','~18g · 340 kcal'],
+  'Sáb':{cafe:['Iogurte grego + aveia + banana + sementes + mel','~20g · 340 kcal'],
        almoco:['Frango grelhado + arroz integral + legumes + salada','~42g · 560 kcal'],
        lanche:['Mix de castanhas + fruta','~8g · 220 kcal'],
        jantar:['Tofu grelhado OU peixe + legumes salteados + salada','~30g · 360 kcal']},
-  Dom:{cafe:['Panqueca de aveia e ovo + fruta','~22g · 350 kcal'],
+  Dom:{cafe:['Panqueca de aveia e ovo + fruta + iogurte','~24g · 350 kcal'],
        almoco:['Peixe assado + batata doce + salada colorida + grão de bico','~40g · 560 kcal'],
        lanche:['Iogurte grego + fruta','~15g · 200 kcal'],
        jantar:['Livre leve: omelete + salada, ou repetir um favorito','~26g · 340 kcal']},
 };
-const MEALLABEL = {cafe:'☕ Café da manhã', almoco:'🍽️ Almoço', lanche:'🍎 Lanche', jantar:'🌙 Jantar'};
+const MEALLABEL = {cafe:'☕ Café da manhã (pós-treino)', almoco:'🍽️ Almoço', lanche:'🍎 Lanche', jantar:'🌙 Jantar'};
 let selDay = DAYS[Math.min(new Date().getDay()===0?6:new Date().getDay()-1,6)];
 function renderMenu(){
   const pills = document.getElementById('day-pills'); pills.innerHTML='';
-  DAYS.forEach(d=>{
+  DAYS.forEach(function(d){
     const b=document.createElement('div');
     b.className='pill'+(d===selDay?' active':''); b.textContent=d;
-    b.onclick=()=>{ selDay=d; renderMenu(); };
+    b.onclick=function(){ selDay=d; renderMenu(); };
     pills.appendChild(b);
   });
   const c=document.getElementById('menu-content'); const m=MENU[selDay];
-  c.innerHTML=`<div class="card menu-card">`+
-    ['cafe','almoco','lanche','jantar'].map(k=>`
-      <div class="menu-block">
-        <h4>${MEALLABEL[k]}</h4>
-        <p>${m[k][0]}</p>
-        <div class="kcal">${m[k][1]}</div>
-      </div>`).join('')+`</div>`;
+  c.innerHTML='<div class="card menu-card">'+
+    ['cafe','almoco','lanche','jantar'].map(function(k){ return '<div class="menu-block">'+
+        '<h4>'+MEALLABEL[k]+'</h4>'+
+        '<p>'+m[k][0]+'</p>'+
+        '<div class="kcal">'+m[k][1]+'</div>'+
+      '</div>'; }).join('')+'</div>';
 }
 
 /* ---------- PROGRESS ---------- */
@@ -297,24 +348,24 @@ function saveProg(){
   const braco=parseFloat(document.getElementById('in-braco').value)||null;
   if(!peso && !cint && !quad && !braco){ alert('Preencha pelo menos um campo.'); return; }
   const logs=store.get('logs',[]);
-  logs.push({d:todayKey(), peso,cint,quad,braco, t:Date.now()});
+  logs.push({d:todayKey(), peso:peso,cint:cint,quad:quad,braco:braco, t:Date.now()});
   store.set('logs',logs);
-  ['in-peso','in-cint','in-quad','in-braco'].forEach(i=>document.getElementById(i).value='');
+  ['in-peso','in-cint','in-quad','in-braco'].forEach(function(i){ document.getElementById(i).value=''; });
   renderProg();
 }
-function delLog(t){ let logs=store.get('logs',[]); logs=logs.filter(l=>l.t!==t); store.set('logs',logs); renderProg(); }
+function delLog(t){ let logs=store.get('logs',[]); logs=logs.filter(function(l){ return l.t!==t; }); store.set('logs',logs); renderProg(); }
 function renderProg(){
-  const logs=store.get('logs',[]).slice().sort((a,b)=>a.t-b.t);
+  const logs=store.get('logs',[]).slice().sort(function(a,b){ return a.t-b.t; });
   const list=document.getElementById('prog-list');
   if(!logs.length){ list.innerHTML='<div class="empty">Nada registrado ainda.</div>'; }
   else{
-    list.innerHTML = logs.slice().reverse().map(l=>{
+    list.innerHTML = logs.slice().reverse().map(function(l){
       const parts=[]; if(l.peso)parts.push(l.peso+'kg'); if(l.cint)parts.push('C '+l.cint); if(l.quad)parts.push('Q '+l.quad); if(l.braco)parts.push('B '+l.braco);
       const dt=new Date(l.t).toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
-      return `<div class="log-row"><span class="date">${dt}</span><span><span class="vals">${parts.join(' · ')}</span><span class="del" onclick="delLog(${l.t})">excluir</span></span></div>`;
+      return '<div class="log-row"><span class="date">'+dt+'</span><span><span class="vals">'+parts.join(' · ')+'</span><span class="del" onclick="delLog('+l.t+')">excluir</span></span></div>';
     }).join('');
   }
-  drawChart(logs.filter(l=>l.peso));
+  drawChart(logs.filter(function(l){ return l.peso; }));
 }
 function drawChart(logs){
   const cv=document.getElementById('chart'), empty=document.getElementById('chart-empty');
@@ -323,22 +374,19 @@ function drawChart(logs){
   const dpr=window.devicePixelRatio||1, W=cv.clientWidth, H=150;
   cv.width=W*dpr; cv.height=H*dpr; const ctx=cv.getContext('2d'); ctx.scale(dpr,dpr);
   ctx.clearRect(0,0,W,H);
-  const pesos=logs.map(l=>l.peso); const min=Math.min(...pesos)-0.5, max=Math.max(...pesos)+0.5;
+  const pesos=logs.map(function(l){ return l.peso; }); const min=Math.min.apply(null,pesos)-0.5, max=Math.max.apply(null,pesos)+0.5;
   const pad=28, pw=W-pad*2, ph=H-pad*2;
-  const x=i=>pad+(pw*(logs.length===1?0.5:i/(logs.length-1)));
-  const y=v=>pad+ph*(1-(v-min)/(max-min||1));
-  // area
+  const x=function(i){ return pad+(pw*(logs.length===1?0.5:i/(logs.length-1))); };
+  const y=function(v){ return pad+ph*(1-(v-min)/(max-min||1)); };
   ctx.beginPath(); ctx.moveTo(x(0),y(pesos[0]));
-  logs.forEach((l,i)=>ctx.lineTo(x(i),y(l.peso)));
+  logs.forEach(function(l,i){ ctx.lineTo(x(i),y(l.peso)); });
   ctx.lineTo(x(logs.length-1),H-pad); ctx.lineTo(x(0),H-pad); ctx.closePath();
   ctx.fillStyle='rgba(46,125,50,.10)'; ctx.fill();
-  // line
-  ctx.beginPath(); logs.forEach((l,i)=> i?ctx.lineTo(x(i),y(l.peso)):ctx.moveTo(x(i),y(l.peso)));
+  ctx.beginPath(); logs.forEach(function(l,i){ if(i) ctx.lineTo(x(i),y(l.peso)); else ctx.moveTo(x(i),y(l.peso)); });
   ctx.strokeStyle='#2E7D32'; ctx.lineWidth=2.5; ctx.lineJoin='round'; ctx.stroke();
-  // dots + labels
-  ctx.fillStyle='#2E7D32'; ctx.font='11px sans-serif'; ctx.textAlign='center';
-  logs.forEach((l,i)=>{ ctx.beginPath(); ctx.arc(x(i),y(l.peso),3.5,0,7); ctx.fill(); });
-  ctx.fillStyle='#6b7a6b';
+  ctx.fillStyle='#2E7D32';
+  logs.forEach(function(l,i){ ctx.beginPath(); ctx.arc(x(i),y(l.peso),3.5,0,7); ctx.fill(); });
+  ctx.fillStyle='#6b7a6b'; ctx.font='11px sans-serif'; ctx.textAlign='center';
   ctx.fillText(pesos[0]+'kg', x(0), y(pesos[0])-8);
   ctx.fillText(pesos[pesos.length-1]+'kg', x(logs.length-1), y(pesos[pesos.length-1])-8);
 }
@@ -348,19 +396,20 @@ const SHOP = {
   'Proteínas':['Salmão (2 porções)','Tilápia (5 porções)','Filé de frango','Ovos (2 dúzias)','Whey protein','Iogurte grego natural','Tofu (opcional)','Queijo minas'],
   'Carboidratos':['Arroz integral','Batata doce','Grão de bico','Aveia','Pão integral','Tapioca'],
   'Vegetais e legumes':['Couve','Brócolis','Abóbora','Beterraba','Folhas p/ salada','Tomate','Pepino','Cebola e alho'],
-  'Frutas':['Mamão','Banana','Fruta da época'],
-  'Extras':['Azeite','Limão','Castanhas','Pasta de amendoim','Temperos naturais'],
+  'Frutas':['Mamão','Banana','Maçã'],
+  'Cálcio e ossos 🦴':['Leite de amêndoas fortificado','Gergelim / tahine','Sardinha em lata','Linhaça'],
+  'Extras':['Azeite','Limão','Castanhas','Sementes (girassol/abóbora)','Pasta de amendoim','Temperos naturais'],
 };
 function renderShop(){
   const checked=store.get('shop',{});
   const el=document.getElementById('shop-list'); el.innerHTML='';
-  Object.entries(SHOP).forEach(([cat,items])=>{
+  Object.keys(SHOP).forEach(function(cat){
     const h=document.createElement('div'); h.className='cat-h'; h.textContent=cat; el.appendChild(h);
-    items.forEach(it=>{
+    SHOP[cat].forEach(function(it){
       const on=!!checked[it];
       const row=document.createElement('div'); row.className='shop-item'+(on?' on':'');
-      row.innerHTML=`<div class="check ${on?'on':''}">${on?'✓':''}</div><span>${it}</span>`;
-      row.onclick=()=>{ checked[it]=!checked[it]; store.set('shop',checked); renderShop(); };
+      row.innerHTML='<div class="check '+(on?'on':'')+'">'+(on?'✓':'')+'</div><span>'+it+'</span>';
+      row.onclick=function(){ checked[it]=!checked[it]; store.set('shop',checked); renderShop(); };
       el.appendChild(row);
     });
   });
@@ -369,17 +418,19 @@ function resetShop(){ store.set('shop',{}); renderShop(); }
 
 /* ---------- NAV ---------- */
 function go(tab,btn){
-  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
+  const pages=document.querySelectorAll('.tab-page');
+  for(let i=0;i<pages.length;i++) pages[i].classList.remove('active');
   document.getElementById('tab-'+tab).classList.add('active');
-  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  const btns=document.querySelectorAll('nav button');
+  for(let i=0;i<btns.length;i++) btns[i].classList.remove('active');
   btn.classList.add('active');
-  if(tab==='prog') drawChart(store.get('logs',[]).filter(l=>l.peso).sort((a,b)=>a.t-b.t));
+  if(tab==='prog') renderProg();
   window.scrollTo(0,0);
 }
 
 /* init */
-renderToday(); renderMenu(); renderProg(); renderShop();
-window.addEventListener('resize',()=>{ if(document.getElementById('tab-prog').classList.contains('active')) renderProg(); });
+renderToday(); renderCalcium(); renderMenu(); renderProg(); renderExams(); renderShop();
+window.addEventListener('resize',function(){ if(document.getElementById('tab-prog').classList.contains('active')) renderProg(); });
 </script>
 </body>
 </html>
