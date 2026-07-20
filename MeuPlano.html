@@ -180,7 +180,7 @@
 
   <!-- COMPRAS -->
   <section id="tab-shop" class="tab-page">
-    <div class="tipbox">🛒 Ciclo de 3 meses: comida toda semana + despensa 1x por mês. Ao terminar os 3 meses, toque em "Renovar ciclo".</div>
+    <div class="tipbox">🛒 Ciclo de 3 meses: comida toda semana + despensa 1x por mês. Cada item mostra a quantidade a comprar. Ao terminar os 3 meses, toque em "Renovar ciclo".</div>
     <div class="day-pills" id="month-pills"></div>
 
     <div class="section-title">Compras da semana 🥗</div>
@@ -401,16 +401,47 @@ function drawChart(logs){
 }
 
 /* ---------- SHOPPING (ciclo de 3 meses, só comida) ---------- */
-const WEEKLY = ['Salmão (2 porções)','Tilápia (3 porções)','Ovos (2 dúzias)','Tofu / edamame (opcional)','Iogurte grego','Leite de amêndoas fortificado','Mamão','Banana','Maçã','Couve','Brócolis','Abóbora','Beterraba','Legumes p/ sopa (cenoura, abobrinha, chuchu)','Folhas p/ salada','Tomate','Pepino'];
-const PANTRY = ['Arroz integral','Batata doce','Grão de bico','Aveia','Linhaça','Sementes (girassol/abóbora)','Castanhas','Azeite','Gergelim / tahine','Sardinha em lata','Pasta de amendoim','Temperos naturais'];
+const WEEKLY = [
+  ['Salmão','2 postas (~300g)'],
+  ['Tilápia','3 filés (~450g)'],
+  ['Ovos','1½–2 dúzias'],
+  ['Edamame / tofu','1 pacote'],
+  ['Iogurte grego','1 pote grande (500g) ou 7 unid.'],
+  ['Leite de amêndoas','1 caixa (1L)'],
+  ['Mamão','1 unidade'],
+  ['Banana','1 penca (~7)'],
+  ['Maçã','4–5 unidades'],
+  ['Couve','1 maço'],
+  ['Brócolis','1 maço ou 1 pct congelado'],
+  ['Abóbora','1 pedaço (~500g)'],
+  ['Beterraba','3–4 unidades'],
+  ['Legumes p/ sopa','cenoura, abobrinha, chuchu (2–3 de cada)'],
+  ['Folhas p/ salada','1–2 pés/maços'],
+  ['Tomate','4–5 unidades'],
+  ['Pepino','2–3 unidades'],
+];
+const PANTRY = [
+  ['Arroz integral','1 pacote (1kg)'],
+  ['Batata doce','~1,5–2 kg'],
+  ['Grão de bico','2 pacotes ou 4 latas'],
+  ['Aveia','1 pacote (500g)'],
+  ['Linhaça','1 pacote (250g)'],
+  ['Sementes girassol/abóbora','1 pacote de cada'],
+  ['Castanhas','1 pacote (200g)'],
+  ['Azeite','1 garrafa'],
+  ['Gergelim / tahine','1 pote'],
+  ['Sardinha em lata','4–6 latas'],
+  ['Pasta de amendoim','1 pote'],
+  ['Temperos naturais','conforme'],
+];
 
 let selMonth = 1, selWeek = 1;
 function pill(label,active,onClick){
   const b=document.createElement('div'); b.className='pill'+(active?' active':''); b.textContent=label; b.onclick=onClick; return b;
 }
-function shopRow(label,checked,onToggle){
+function shopRow(label,qty,checked,onToggle){
   const row=document.createElement('div'); row.className='shop-item'+(checked?' on':'');
-  row.innerHTML='<div class="check '+(checked?'on':'')+'">'+(checked?'✓':'')+'</div><span>'+label+'</span>';
+  row.innerHTML='<div class="check '+(checked?'on':'')+'">'+(checked?'✓':'')+'</div><span>'+label+' <small style="color:var(--grey)">— '+qty+'</small></span>';
   row.onclick=onToggle; return row;
 }
 function renderMonthPills(){
@@ -422,12 +453,12 @@ function renderWeek(){
   for(let w=1;w<=4;w++){ (function(w){ wp.appendChild(pill('Sem '+w, w===selWeek, function(){ selWeek=w; renderWeek(); })); })(w); }
   const key='wk_'+selMonth+'_'+selWeek; const done=store.get(key,{});
   const el=document.getElementById('week-list'); el.innerHTML='';
-  WEEKLY.forEach(function(it){ el.appendChild(shopRow(it, !!done[it], function(){ done[it]=!done[it]; store.set(key,done); renderWeek(); })); });
+  WEEKLY.forEach(function(it){ const nm=it[0]; el.appendChild(shopRow(nm, it[1], !!done[nm], function(){ done[nm]=!done[nm]; store.set(key,done); renderWeek(); })); });
 }
 function renderPantry(){
   const key='pan_'+selMonth; const done=store.get(key,{});
   const el=document.getElementById('pantry-list'); el.innerHTML='';
-  PANTRY.forEach(function(it){ el.appendChild(shopRow(it, !!done[it], function(){ done[it]=!done[it]; store.set(key,done); renderPantry(); })); });
+  PANTRY.forEach(function(it){ const nm=it[0]; el.appendChild(shopRow(nm, it[1], !!done[nm], function(){ done[nm]=!done[nm]; store.set(key,done); renderPantry(); })); });
 }
 function renderShopAll(){ renderMonthPills(); renderWeek(); renderPantry(); }
 function renewCycle(){
