@@ -306,17 +306,17 @@ const MENU = {
        almoco:['Salmão grelhado + arroz integral + couve refogada + salada + beterraba','~40g · 550 kcal'],
        lanche:['Iogurte grego + maçã + sementes','~15g · 220 kcal'],
        jantar:['Tilápia + purê de abóbora + brócolis + salada verde','~32g · 380 kcal']},
-  Ter:{cafe:['Iogurte grego + aveia + mamão + linhaça + whey','~28g · 340 kcal'],
-       almoco:['Tilápia + batata doce + couve + salada + beterraba','~38g · 520 kcal'],
-       lanche:['Whey pós-treino + 1 fruta','~26g · 200 kcal'],
+  Ter:{cafe:['Iogurte grego + aveia + abacate + linhaça + whey','~28g · 360 kcal'],
+       almoco:['Merluza ou pescada assada + batata doce + couve + salada','~38g · 500 kcal'],
+       lanche:['Whey pós-treino + melão','~26g · 200 kcal'],
        jantar:['2 ovos + grão de bico + abóbora + muita folha','~28g · 360 kcal']},
   Qua:{cafe:['Vitamina: whey + banana + aveia + leite de amêndoas + linhaça','~28g · 320 kcal'],
        almoco:['Salmão + arroz integral + brócolis + salada','~40g · 540 kcal'],
        lanche:['Iogurte grego + pasta de amendoim','~16g · 230 kcal'],
        jantar:['Sopa de vegetais + grão de bico + 2 ovos + salada','~26g · 340 kcal']},
   Qui:{cafe:['Overnight oats: aveia + iogurte + maçã + sementes + whey','~28g · 350 kcal'],
-       almoco:['Tilápia + batata doce + couve + beterraba + salada','~38g · 520 kcal'],
-       lanche:['Iogurte grego + fruta','~12g · 180 kcal'],
+       almoco:['Atum grelhado + arroz integral + brócolis + salada','~40g · 520 kcal'],
+       lanche:['Iogurte grego + figo','~12g · 180 kcal'],
        jantar:['Sopa de legumes com grão de bico + peixe desfiado','~26g · 340 kcal']},
   Sex:{cafe:['Iogurte grego + aveia + mamão + linhaça + whey','~28g · 340 kcal'],
        almoco:['Tilápia + arroz integral + couve + salada','~38g · 510 kcal'],
@@ -407,6 +407,9 @@ const WEEKLY = [
   ['Mamão','1 unidade'],
   ['Banana','1 penca (~7)'],
   ['Maçã','4–5 unidades'],
+  ['Abacate','1–2 unidades'],
+  ['Melão','1 unidade'],
+  ['Figo','1 caixinha (quando tiver)'],
   ['Couve','1 maço'],
   ['Brócolis','1 maço ou 1 pct congelado'],
   ['Abóbora','1 pedaço (~500g)'],
@@ -432,10 +435,10 @@ const PANTRY = [
 ];
 
 const WEEK_SUGGEST = [
-  'Semana do salmão: 2 refeições com salmão, sopa de vegetais 1x, iogurte com mamão de sobremesa. Salada: couve fatiada.',
-  'Semana da sardinha: use as latas em 2 almoços rápidos (com beterraba ralada e limão), jantar leve com edamame + brócolis.',
-  'Semana veg: tofu ou edamame no jantar 2x, brócolis no vapor, omelete de abóbora no café. Peixe nos outros dias.',
-  'Semana dos ovos: mexidos, poché e omelete variados; peixe assado no fim de semana + purê de abóbora. Fruta: maçã e banana.',
+  'Semana do salmão: salmão 2x + 1 sardinha. Abacate no café, melão de sobremesa. Mantenha iogurte e linhaça (bom pro intestino).',
+  'Semana do peixe branco: merluza ou pescada assada, sardinha nas latas, figo no lanche. Sopa de vegetais 1x.',
+  'Semana do atum/cavala: atum ou cavala (ricos em ômega 3), edamame no jantar, abacate na salada, melão de sobremesa.',
+  'Semana veg + ovos: tofu/edamame e ovos variados, tilápia 2x, figo e iogurte de sobremesa. Capriche na fibra e água.',
 ];
 let selMonth = 1, selWeek = 1;
 function pill(label,active,onClick){
