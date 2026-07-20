@@ -322,14 +322,8 @@ const MENU = {
        almoco:['Tilápia + arroz integral + couve + salada','~38g · 510 kcal'],
        lanche:['Whey pós-treino','~24g · 130 kcal'],
        jantar:['Omelete de vegetais (2 ovos) + salada + abóbora','~26g · 320 kcal']},
-  'Sáb':{cafe:['Iogurte grego + aveia + banana + sementes + mel','~20g · 340 kcal'],
-       almoco:['Peixe assado + arroz integral + legumes + salada','~40g · 550 kcal'],
-       lanche:['Mix de castanhas + fruta','~8g · 220 kcal'],
-       jantar:['Tofu grelhado OU peixe + legumes salteados + salada','~30g · 360 kcal']},
-  Dom:{cafe:['Panqueca de aveia e ovo + fruta + iogurte','~24g · 350 kcal'],
-       almoco:['Peixe assado + batata doce + salada colorida + grão de bico','~40g · 560 kcal'],
-       lanche:['Iogurte grego + fruta','~15g · 200 kcal'],
-       jantar:['Livre leve: omelete + salada, ou repetir um favorito','~26g · 340 kcal']},
+  'Sáb':{free:true},
+  Dom:{free:true},
 };
 const MEALLABEL = {cafe:'☕ Café da manhã (pós-treino)', almoco:'🍽️ Almoço', lanche:'🍎 Lanche', jantar:'🌙 Jantar'};
 let selDay = DAYS[Math.min(new Date().getDay()===0?6:new Date().getDay()-1,6)];
@@ -342,6 +336,7 @@ function renderMenu(){
     pills.appendChild(b);
   });
   const c=document.getElementById('menu-content'); const m=MENU[selDay];
+  if(m.free){ c.innerHTML='<div class="card menu-card"><div class="menu-block"><h4>🎉 Dia livre</h4><p>Fim de semana sem plano fixo — coma com prazer e bom senso. Só tente manter uma boa fonte de proteína nas refeições principais e curtir o descanso.</p><div class="kcal">Sem meta rígida hoje</div></div></div>'; return; }
   c.innerHTML='<div class="card menu-card">'+
     ['cafe','almoco','lanche','jantar'].map(function(k){ return '<div class="menu-block">'+
         '<h4>'+MEALLABEL[k]+'</h4>'+
