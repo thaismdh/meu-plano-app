@@ -185,6 +185,7 @@
 
     <div class="section-title">Compras da semana 🥗</div>
     <div class="day-pills" id="week-pills"></div>
+    <div class="tipbox" id="week-tip"></div>
     <div class="card" id="week-list"></div>
 
     <div class="section-title">Despensa do mês (não perece) 🫙</div>
@@ -435,6 +436,12 @@ const PANTRY = [
   ['Temperos naturais','conforme'],
 ];
 
+const WEEK_SUGGEST = [
+  'Semana do salmão: 2 refeições com salmão, sopa de vegetais 1x, iogurte com mamão de sobremesa. Salada: couve fatiada.',
+  'Semana da sardinha: use as latas em 2 almoços rápidos (com beterraba ralada e limão), jantar leve com edamame + brócolis.',
+  'Semana veg: tofu ou edamame no jantar 2x, brócolis no vapor, omelete de abóbora no café. Peixe nos outros dias.',
+  'Semana dos ovos: mexidos, poché e omelete variados; peixe assado no fim de semana + purê de abóbora. Fruta: maçã e banana.',
+];
 let selMonth = 1, selWeek = 1;
 function pill(label,active,onClick){
   const b=document.createElement('div'); b.className='pill'+(active?' active':''); b.textContent=label; b.onclick=onClick; return b;
@@ -451,6 +458,7 @@ function renderMonthPills(){
 function renderWeek(){
   const wp=document.getElementById('week-pills'); wp.innerHTML='';
   for(let w=1;w<=4;w++){ (function(w){ wp.appendChild(pill('Sem '+w, w===selWeek, function(){ selWeek=w; renderWeek(); })); })(w); }
+  document.getElementById('week-tip').innerHTML = '💡 '+WEEK_SUGGEST[selWeek-1];
   const key='wk_'+selMonth+'_'+selWeek; const done=store.get(key,{});
   const el=document.getElementById('week-list'); el.innerHTML='';
   WEEKLY.forEach(function(it){ const nm=it[0]; el.appendChild(shopRow(nm, it[1], !!done[nm], function(){ done[nm]=!done[nm]; store.set(key,done); renderWeek(); })); });
