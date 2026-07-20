@@ -180,9 +180,18 @@
 
   <!-- COMPRAS -->
   <section id="tab-shop" class="tab-page">
-    <div class="tipbox">🛒 Lista da semana baseada no seu cardápio. Marque o que já tem em casa.</div>
-    <div class="card" id="shop-list"></div>
-    <button class="btn ghost" onclick="resetShop()">Desmarcar tudo</button>
+    <div class="tipbox">🛒 Ciclo de 3 meses: comida toda semana + despensa 1x por mês. Ao terminar os 3 meses, toque em "Renovar ciclo".</div>
+    <div class="day-pills" id="month-pills"></div>
+
+    <div class="section-title">Compras da semana 🥗</div>
+    <div class="day-pills" id="week-pills"></div>
+    <div class="card" id="week-list"></div>
+
+    <div class="section-title">Despensa do mês (não perece) 🫙</div>
+    <div class="card" id="pantry-list"></div>
+
+    <button class="btn ghost" onclick="renewCycle()">🔄 Renovar ciclo de 3 meses</button>
+    <div class="tipbox" style="margin-top:14px">💊 Seus suplementos e remédios continuam no seu app de bem-estar.</div>
   </section>
 
 </div>
@@ -391,30 +400,41 @@ function drawChart(logs){
   ctx.fillText(pesos[pesos.length-1]+'kg', x(logs.length-1), y(pesos[pesos.length-1])-8);
 }
 
-/* ---------- SHOPPING ---------- */
-const SHOP = {
-  'Proteínas':['Salmão (2 porções)','Tilápia (5 porções)','Filé de frango','Ovos (2 dúzias)','Whey protein','Iogurte grego natural','Tofu (opcional)','Queijo minas'],
-  'Carboidratos':['Arroz integral','Batata doce','Grão de bico','Aveia','Pão integral','Tapioca'],
-  'Vegetais e legumes':['Couve','Brócolis','Abóbora','Beterraba','Folhas p/ salada','Tomate','Pepino','Cebola e alho'],
-  'Frutas':['Mamão','Banana','Maçã'],
-  'Cálcio e ossos 🦴':['Leite de amêndoas fortificado','Gergelim / tahine','Sardinha em lata','Linhaça'],
-  'Extras':['Azeite','Limão','Castanhas','Sementes (girassol/abóbora)','Pasta de amendoim','Temperos naturais'],
-};
-function renderShop(){
-  const checked=store.get('shop',{});
-  const el=document.getElementById('shop-list'); el.innerHTML='';
-  Object.keys(SHOP).forEach(function(cat){
-    const h=document.createElement('div'); h.className='cat-h'; h.textContent=cat; el.appendChild(h);
-    SHOP[cat].forEach(function(it){
-      const on=!!checked[it];
-      const row=document.createElement('div'); row.className='shop-item'+(on?' on':'');
-      row.innerHTML='<div class="check '+(on?'on':'')+'">'+(on?'✓':'')+'</div><span>'+it+'</span>';
-      row.onclick=function(){ checked[it]=!checked[it]; store.set('shop',checked); renderShop(); };
-      el.appendChild(row);
-    });
-  });
+/* ---------- SHOPPING (ciclo de 3 meses, só comida) ---------- */
+const WEEKLY = ['Salmão (2 porções)','Tilápia (5 porções)','Filé de frango','Ovos (2 dúzias)','Iogurte grego','Leite de amêndoas fortificado','Mamão','Banana','Maçã','Couve','Brócolis','Abóbora','Beterraba','Folhas p/ salada','Tomate','Pepino'];
+const PANTRY = ['Arroz integral','Batata doce','Grão de bico','Aveia','Linhaça','Sementes (girassol/abóbora)','Castanhas','Azeite','Gergelim / tahine','Sardinha em lata','Pasta de amendoim','Temperos naturais'];
+
+let selMonth = 1, selWeek = 1;
+function pill(label,active,onClick){
+  const b=document.createElement('div'); b.className='pill'+(active?' active':''); b.textContent=label; b.onclick=onClick; return b;
 }
-function resetShop(){ store.set('shop',{}); renderShop(); }
+function shopRow(label,checked,onToggle){
+  const row=document.createElement('div'); row.className='shop-item'+(checked?' on':'');
+  row.innerHTML='<div class="check '+(checked?'on':'')+'">'+(checked?'✓':'')+'</div><span>'+label+'</span>';
+  row.onclick=onToggle; return row;
+}
+function renderMonthPills(){
+  const el=document.getElementById('month-pills'); el.innerHTML='';
+  for(let m=1;m<=3;m++){ (function(m){ el.appendChild(pill('Mês '+m, m===selMonth, function(){ selMonth=m; selWeek=1; renderShopAll(); })); })(m); }
+}
+function renderWeek(){
+  const wp=document.getElementById('week-pills'); wp.innerHTML='';
+  for(let w=1;w<=4;w++){ (function(w){ wp.appendChild(pill('Sem '+w, w===selWeek, function(){ selWeek=w; renderWeek(); })); })(w); }
+  const key='wk_'+selMonth+'_'+selWeek; const done=store.get(key,{});
+  const el=document.getElementById('week-list'); el.innerHTML='';
+  WEEKLY.forEach(function(it){ el.appendChild(shopRow(it, !!done[it], function(){ done[it]=!done[it]; store.set(key,done); renderWeek(); })); });
+}
+function renderPantry(){
+  const key='pan_'+selMonth; const done=store.get(key,{});
+  const el=document.getElementById('pantry-list'); el.innerHTML='';
+  PANTRY.forEach(function(it){ el.appendChild(shopRow(it, !!done[it], function(){ done[it]=!done[it]; store.set(key,done); renderPantry(); })); });
+}
+function renderShopAll(){ renderMonthPills(); renderWeek(); renderPantry(); }
+function renewCycle(){
+  if(!confirm('Renovar o ciclo? Isso desmarca as compras dos 3 meses pra recomeçar.')) return;
+  for(let m=1;m<=3;m++){ store.set('pan_'+m,{}); for(let w=1;w<=4;w++) store.set('wk_'+m+'_'+w,{}); }
+  selMonth=1; selWeek=1; renderShopAll();
+}
 
 /* ---------- NAV ---------- */
 function go(tab,btn){
@@ -429,7 +449,7 @@ function go(tab,btn){
 }
 
 /* init */
-renderToday(); renderCalcium(); renderMenu(); renderProg(); renderExams(); renderShop();
+renderToday(); renderCalcium(); renderMenu(); renderProg(); renderExams(); renderShopAll();
 window.addEventListener('resize',function(){ if(document.getElementById('tab-prog').classList.contains('active')) renderProg(); });
 </script>
 </body>
