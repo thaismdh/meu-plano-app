@@ -134,7 +134,14 @@
 
   <!-- RECEITAS -->
   <section id="tab-receitas" class="tab-page">
-    <div class="tipbox">📖 As melhores receitas dos seus PDFs, filtradas pro seu caso: pescetariana, proteína alta e cálcio. 🦴 = boa fonte de cálcio. Filtre por categoria abaixo.</div>
+    <div class="tipbox">📖 As melhores receitas dos seus PDFs, filtradas pro seu caso: pescetariana, proteína alta e cálcio. 🦴 = boa fonte de cálcio.</div>
+    <div class="section-title" style="margin-top:0">Cozinhar no domingo 🍳</div>
+    <div class="card">
+      <div class="goalbar" style="margin-top:0;margin-bottom:8px">Depois das compras, adiante o que congela — a semana fica no automático. Marque conforme for fazendo.</div>
+      <div id="sunday-list"></div>
+      <div class="reset" onclick="resetSunday()" style="margin-top:8px">Desmarcar tudo</div>
+    </div>
+    <div class="section-title">Receitas — filtre por categoria</div>
     <div class="day-pills" id="rec-cat-pills"></div>
     <div id="rec-list"></div>
     <div class="tipbox">🐟 <b>Marinadas pro seu peixe/tofu</b> (do PDF de marinadas): shoyu + gengibre + alho · limão + ervas + azeite · mostarda + mel + limão. Deixe marinando e leve à airfryer ou frigideira.</div>
@@ -301,6 +308,29 @@ function renderRecipes(){
     list.appendChild(card);
   });
 }
+
+/* ---------- COZINHAR NO DOMINGO ---------- */
+const SUNDAY_PREP=[
+  'Fazer leva de hambúrguer de atum (airfryer) e congelar',
+  'Fazer almôndegas de grão de bico e congelar',
+  'Fazer croquetes de lentilha e congelar',
+  'Deixar 1 pote de pão de aveia pronto',
+  'Deixar pastinha de atum na geladeira',
+  'Marinar e porcionar os peixes da semana',
+  'Cozinhar grão de bico e lentilha (se secos)',
+  'Pré-cortar legumes da sopa e da salada',
+];
+function renderSunday(){
+  const done=store.get('sunday',{}), el=document.getElementById('sunday-list'); el.innerHTML='';
+  SUNDAY_PREP.forEach(function(s){
+    const on=!!done[s];
+    const row=document.createElement('div'); row.className='shop-item'+(on?' on':'');
+    row.innerHTML='<div class="check '+(on?'on':'')+'">'+(on?'✓':'')+'</div><span>'+s+'</span>';
+    row.onclick=function(){ done[s]=!done[s]; store.set('sunday',done); renderSunday(); };
+    el.appendChild(row);
+  });
+}
+function resetSunday(){ if(confirm('Desmarcar o preparo do domingo?')){ store.set('sunday',{}); renderSunday(); } }
 
 /* ---------- MENU (por semana) ---------- */
 const DAYS=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
@@ -482,7 +512,7 @@ function go(tab,btn){
 }
 
 /* init */
-renderToday(); renderCalcium(); renderMenu(); renderRecipes(); renderProg(); renderExams(); renderShopAll();
+renderToday(); renderCalcium(); renderMenu(); renderRecipes(); renderSunday(); renderProg(); renderExams(); renderShopAll();
 window.addEventListener('resize',function(){ if(document.getElementById('tab-prog').classList.contains('active')) renderProg(); });
 </script>
 </body>
