@@ -453,14 +453,21 @@ function drawChart(logs){
 }
 
 /* ---------- SHOPPING ---------- */
-const WEEKLY=[
-  ['Salmão','2 postas (~300g)'],['Tilápia','3 filés (~450g)'],['Ovos','2 dúzias'],['Edamame / tofu','1 pacote'],
+const WEEKLY_PROT={
+  1:[['Salmão','3 postas (~450g)'],['Tilápia','1 filé'],['Ovos','2 dúzias']],
+  2:[['Peixe branco (pescada/tilápia)','4 filés (~600g)'],['Ovos','2 dúzias']],
+  3:[['Atum','2 postas'],['Cavala','2 unidades'],['Ovos','2 dúzias']],
+  4:[['Tilápia','3 filés (~450g)'],['Ovos','3 dúzias']],
+};
+const WEEKLY_BASE=[
+  ['Tofu / edamame','1 pacote'],
   ['Queijo cottage','1 pote'],['Queijo (muçarela/meia cura)','1 peça pequena'],
   ['Iogurte grego','1 pote grande (500g) ou 7 unid.'],['Leite de amêndoas','1 caixa (1L)'],
   ['Mamão','1 unidade'],['Banana','1 penca (~7)'],['Maçã','4–5 unidades'],
-  ['Abacate','1–2 unidades'],['Melão','1 unidade'],['Figo','1 caixinha (quando tiver)'],['Morango congelado','1 pacote (sobremesa)'],
+  ['Abacate','1–2 unidades'],['Melão','1 (se tiver)'],['Figo','1 caixinha (se tiver)'],['Morango congelado','1 pacote (sobremesa)'],
   ['Couve','1 maço'],['Brócolis','1 maço ou 1 pct congelado'],['Abóbora','1 pedaço (~500g)'],['Beterraba','3–4 unidades'],
-  ['Legumes p/ sopa','cenoura, abobrinha, chuchu (2–3 de cada)'],['Gengibre','1 pedaço'],['Folhas p/ salada','1–2 pés/maços'],['Tomate','4–5 unidades'],['Pepino','2–3 unidades'],
+  ['Legumes p/ sopa e moqueca','cenoura, abobrinha, chuchu, tomate, pimentão, cebola'],
+  ['Gengibre','1 pedaço'],['Folhas p/ salada','1–2 (quando tiver)'],['Tomate','4–5 unidades'],['Pepino','2–3 (quando tiver)'],
 ];
 const PANTRY=[
   ['Arroz integral','1 pacote (1kg)'],['Batata doce','~1,5–2 kg'],['Grão de bico','2 pacotes ou 4 latas'],['Lentilha','1 pacote'],
@@ -488,7 +495,11 @@ function renderWeek(){
   for(let w=1;w<=4;w++){ (function(w){ wp.appendChild(pill('Sem '+w,w===selWeek,function(){ selWeek=w; renderWeek(); })); })(w); }
   document.getElementById('week-tip').innerHTML='💡 '+WEEK_SUGGEST[selWeek-1];
   const key='wk_'+selMonth+'_'+selWeek, done=store.get(key,{}), el=document.getElementById('week-list'); el.innerHTML='';
-  WEEKLY.forEach(function(it){ const nm=it[0]; el.appendChild(shopRow(nm,it[1],!!done[nm],function(){ done[nm]=!done[nm]; store.set(key,done); renderWeek(); })); });
+  function subhead(t){ const h=document.createElement('div'); h.textContent=t; h.style.cssText='font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.4px;margin:12px 4px 2px'; el.appendChild(h); }
+  function addItems(arr){ arr.forEach(function(it){ const nm=it[0]; el.appendChild(shopRow(nm,it[1],!!done[nm],function(){ done[nm]=!done[nm]; store.set(key,done); renderWeek(); })); }); }
+  subhead('🐟 Peixe da semana'); addItems(WEEKLY_PROT[selWeek]);
+  subhead('🥚 Laticínios, frutas e vegetais'); addItems(WEEKLY_BASE);
+  const note=document.createElement('div'); note.className='goalbar'; note.style.margin='10px 4px 0'; note.innerHTML='🥫 Atum e sardinha em lata estão na <b>despensa do mês</b> (abaixo).'; el.appendChild(note);
 }
 function renderPantry(){
   const key='pan_'+selMonth, done=store.get(key,{}), el=document.getElementById('pantry-list'); el.innerHTML='';
