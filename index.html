@@ -276,20 +276,20 @@ function renderExams(){
 
 /* ---------- RECEITAS ---------- */
 const RECIPES=[
-  {c:'Café & lanche',n:'Pão de aveia',cal:true,i:'1 ovo, 2 col. sopa de aveia, 1 col. sobremesa de gergelim, sementes de girassol e abóbora.',p:'Bata o ovo, misture o resto, coloque num pote e leve ao micro-ondas por 2 a 3 min (ou airfryer). Recheie com pastinha de atum.'},
-  {c:'Café & lanche',n:'Pastinha de atum',cal:true,i:'1 lata de atum escorrido, 2 col. sopa de azeite, 2 col. sopa de cottage.',p:'Amasse o atum e misture o azeite e o cottage. Ótima no pão de aveia, crepioca ou torrada.'},
-  {c:'Café & lanche',n:'Crepioca com cottage',cal:true,i:'1 ovo, 1 col. sopa de tapioca, 2 col. sopa de cottage.',p:'Bata o ovo, misture a tapioca e o cottage, leve à frigideira antiaderente e doure dos dois lados.'},
-  {c:'Café & lanche',n:'Patê de avocado com ovos',cal:false,i:'1/2 avocado, 2 ovos cozidos picados, limão e sal.',p:'Amasse o avocado com limão e sal, misture os ovos picados. Come com torrada ou de colher.'},
-  {c:'Café & lanche',n:'Panqueca de banana',cal:false,i:'1 ovo, 1 col. sopa de farelo de aveia, 1 banana, canela; pasta de amendoim por cima.',p:'Amasse a banana, misture o ovo, o farelo e a canela, frite. Finalize com pasta de amendoim.'},
-  {c:'Peixe & air fryer',n:'Hambúrguer de atum (airfryer)',cal:false,i:'2 latas de atum, 1 ovo, 1/4 xícara de farinha de grão de bico, cebola picada, sal.',p:'Misture tudo, modele os hambúrgueres. Airfryer a 180°C por 12 min, virando na metade.'},
-  {c:'Peixe & air fryer',n:'Iscas de peixe empanadas',cal:false,i:'400g de filé de peixe em tiras, farinha de grão de bico, alho em pó, sal.',p:'Tempere e empane as tiras. Airfryer a 200°C por 10 min, virando na metade.'},
-  {c:'Peixe & air fryer',n:'Tofu com crosta de gergelim',cal:true,i:'200g de tofu firme em cubos, shoyu, 2 col. sopa de gergelim.',p:'Marine o tofu no shoyu por 10 min, passe no gergelim, airfryer a 180°C por 10 min.'},
-  {c:'Peixe & air fryer',n:'Almôndegas de grão de bico',cal:false,i:'2 xícaras de grão de bico cozido, farinha de grão de bico, alho, cominho, salsinha.',p:'Processe o grão de bico com os temperos, junte a farinha até dar liga, modele e airfryer a 180°C por 15 min.'},
-  {c:'Jantar',n:'Moqueca de ovo',cal:false,i:'2 a 3 ovos, tomate, cebola, pimentão, leite de coco, cúrcuma.',p:'Refogue os legumes com cúrcuma, junte o leite de coco e escalfe os ovos no molho até firmar.'},
-  {c:'Jantar',n:'Croquete de lentilha',cal:false,i:'2 xícaras de lentilha cozida, farinha de aveia, alho, sal.',p:'Processe a lentilha com os temperos, junte a farinha, modele e airfryer a 180°C por 15 min.'},
-  {c:'Jantar',n:'Omelete recheada (airfryer)',cal:false,i:'3 ovos, legumes picados (cenoura, cebola, abobrinha), sal.',p:'Misture tudo num refratário pequeno e leve à airfryer a 180°C por 10 min, até firmar.'},
-  {c:'Sobremesa',n:'Sorvete de papaia proteico',cal:true,i:'Mamão congelado, iogurte grego, 1 scoop de whey.',p:'Bata tudo no processador até cremoso. Come na hora ou leva ao freezer.'},
-  {c:'Sobremesa',n:'Pudim de chia',cal:false,i:'2 col. sopa de chia, 150ml de leite de amêndoas, fruta picada.',p:'Misture a chia com o leite, deixe na geladeira por 2h ou de um dia pro outro. Finalize com fruta.'},
+  {c:'Café & lanche',n:'Pão de aveia',cal:true,i:'1 ovo, 2 col. sopa de aveia, 1 col. sobremesa de gergelim, sementes de girassol e abóbora.',p:'Bata o ovo, misture o resto, coloque num pote e leve ao micro-ondas por 2 a 3 min (ou airfryer). Recheie com pastinha de atum.',y:'1 pote = 1 lanche. Faça 2–3 e guarde na geladeira (3–4 dias).'},
+  {c:'Café & lanche',n:'Pastinha de atum',cal:true,i:'1 lata de atum escorrido, 2 col. sopa de azeite, 2 col. sopa de cottage.',p:'Amasse o atum e misture o azeite e o cottage. Ótima no pão de aveia, crepioca ou torrada.',y:'Rende ~3 porções. Geladeira até 3 dias.'},
+  {c:'Café & lanche',n:'Crepioca com cottage',cal:true,i:'1 ovo, 1 col. sopa de tapioca, 2 col. sopa de cottage.',p:'Bata o ovo, misture a tapioca e o cottage, leve à frigideira antiaderente e doure dos dois lados.',y:'Rende 1 porção. Faça na hora (é rápida).'},
+  {c:'Café & lanche',n:'Patê de avocado com ovos',cal:false,i:'1/2 avocado, 2 ovos cozidos picados, limão e sal.',p:'Amasse o avocado com limão e sal, misture os ovos picados. Come com torrada ou de colher.',y:'Rende 1–2 porções. Coma no mesmo dia (avocado escurece).'},
+  {c:'Café & lanche',n:'Panqueca de banana',cal:false,i:'1 ovo, 1 col. sopa de farelo de aveia, 1 banana, canela; pasta de amendoim por cima.',p:'Amasse a banana, misture o ovo, o farelo e a canela, frite. Finalize com pasta de amendoim.',y:'Rende 1 porção. Faça na hora.'},
+  {c:'Peixe & air fryer',n:'Hambúrguer de atum (airfryer)',cal:false,i:'2 latas de atum, 1 ovo, 1/4 xícara de farinha de grão de bico, cebola picada, sal.',p:'Misture tudo, modele os hambúrgueres. Airfryer a 180°C por 12 min, virando na metade.',y:'Rende ~4 unidades. Coma 1, congele 3 em porções individuais.'},
+  {c:'Peixe & air fryer',n:'Iscas de peixe empanadas',cal:false,i:'400g de filé de peixe em tiras, farinha de grão de bico, alho em pó, sal.',p:'Tempere e empane as tiras. Airfryer a 200°C por 10 min, virando na metade.',y:'Rende ~3 porções. Melhor fresca; pode congelar crua empanada.'},
+  {c:'Peixe & air fryer',n:'Tofu com crosta de gergelim',cal:true,i:'200g de tofu firme em cubos, shoyu, 2 col. sopa de gergelim.',p:'Marine o tofu no shoyu por 10 min, passe no gergelim, airfryer a 180°C por 10 min.',y:'Rende ~2 porções. Melhor fresco (2 dias na geladeira).'},
+  {c:'Peixe & air fryer',n:'Almôndegas de grão de bico',cal:false,i:'2 xícaras de grão de bico cozido, farinha de grão de bico, alho, cominho, salsinha.',p:'Processe o grão de bico com os temperos, junte a farinha até dar liga, modele e airfryer a 180°C por 15 min.',y:'Rende ~12–16 (3–4 porções). Congele em porções.'},
+  {c:'Jantar',n:'Moqueca de ovo',cal:false,i:'2 a 3 ovos, tomate, cebola, pimentão, leite de coco, cúrcuma.',p:'Refogue os legumes com cúrcuma, junte o leite de coco e escalfe os ovos no molho até firmar.',y:'Rende 1–2 porções. Faça na hora.'},
+  {c:'Jantar',n:'Croquete de lentilha',cal:false,i:'2 xícaras de lentilha cozida, farinha de aveia, alho, sal.',p:'Processe a lentilha com os temperos, junte a farinha, modele e airfryer a 180°C por 15 min.',y:'Rende ~10–12 (3 porções). Congele em porções.'},
+  {c:'Jantar',n:'Omelete recheada (airfryer)',cal:false,i:'3 ovos, legumes picados (cenoura, cebola, abobrinha), sal.',p:'Misture tudo num refratário pequeno e leve à airfryer a 180°C por 10 min, até firmar.',y:'Rende 1 porção. Faça na hora.'},
+  {c:'Sobremesa',n:'Sorvete de papaia proteico',cal:true,i:'Mamão congelado, iogurte grego, 1 scoop de whey.',p:'Bata tudo no processador até cremoso. Come na hora ou leva ao freezer.',y:'Rende 1–2 porções. Congele o excedente.'},
+  {c:'Sobremesa',n:'Pudim de chia',cal:false,i:'2 col. sopa de chia, 150ml de leite de amêndoas, fruta picada.',p:'Misture a chia com o leite, deixe na geladeira por 2h ou de um dia pro outro. Finalize com fruta.',y:'Rende 2 porções. Dura 3–4 dias na geladeira.'},
 ];
 const REC_CATS=['Todas','Café & lanche','Peixe & air fryer','Jantar','Sobremesa'];
 let selRecCat='Todas';
@@ -304,7 +304,7 @@ function renderRecipes(){
   RECIPES.filter(function(r){ return selRecCat==='Todas'||r.c===selRecCat; }).forEach(function(r){
     const card=document.createElement('div'); card.className='card rec';
     const chips='<span class="chip">'+r.c+'</span>'+(r.cal?'<span class="chip cal">🦴 cálcio</span>':'');
-    card.innerHTML='<h4>'+r.n+chips+'</h4><p><b>Ingredientes:</b> '+r.i+'</p><p><b>Preparo:</b> '+r.p+'</p>';
+    card.innerHTML='<h4>'+r.n+chips+'</h4><p><b>Ingredientes:</b> '+r.i+'</p><p><b>Preparo:</b> '+r.p+'</p><p style="color:var(--green);font-size:12.5px;margin-top:6px"><b>👤 Rende / congelar:</b> '+r.y+'</p>';
     list.appendChild(card);
   });
 }
