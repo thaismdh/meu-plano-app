@@ -17,17 +17,8 @@
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-    background:var(--bg);color:var(--ink);
-    padding-bottom:calc(78px + env(safe-area-inset-bottom));
-    -webkit-font-smoothing:antialiased;
-  }
-  header{
-    background:linear-gradient(135deg,var(--green),var(--dark));color:#fff;
-    padding:calc(18px + env(safe-area-inset-top)) 20px 18px;
-    border-radius:0 0 22px 22px;box-shadow:var(--shadow);position:relative;
-  }
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:calc(80px + env(safe-area-inset-bottom));-webkit-font-smoothing:antialiased}
+  header{background:linear-gradient(135deg,var(--green),var(--dark));color:#fff;padding:calc(18px + env(safe-area-inset-top)) 20px 18px;border-radius:0 0 22px 22px;box-shadow:var(--shadow)}
   header h1{margin:0;font-size:19px;font-weight:700;letter-spacing:.2px}
   header p{margin:3px 0 0;font-size:13px;opacity:.85}
   .wrap{max-width:520px;margin:0 auto;padding:16px}
@@ -65,6 +56,11 @@
   .menu-block{padding:12px 0;border-bottom:1px solid var(--line)}
   .menu-block:last-child{border-bottom:none}
   .theme-tag{font-size:12px;font-weight:700;color:var(--accent);margin:0 4px 8px}
+  .rec h4{margin:0 0 6px;font-size:15px;color:var(--dark)}
+  .rec .chip{display:inline-block;font-size:10.5px;font-weight:700;color:#fff;background:var(--green);border-radius:20px;padding:2px 9px;margin-left:6px;vertical-align:middle;text-transform:uppercase;letter-spacing:.3px}
+  .rec .chip.cal{background:var(--accent)}
+  .rec p{margin:4px 0;font-size:13.5px;line-height:1.5}
+  .rec p b{color:var(--dark)}
   .field{display:flex;gap:10px;margin-bottom:10px}
   .field label{flex:1;font-size:13px;color:var(--grey);display:flex;flex-direction:column;gap:5px}
   .field input{padding:11px;border:1px solid var(--line);border-radius:11px;font-size:16px;background:#fff;width:100%}
@@ -81,8 +77,8 @@
   .shop-item:last-child{border-bottom:none}
   .shop-item.on span{text-decoration:line-through;color:var(--grey)}
   nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;box-shadow:0 -2px 16px rgba(0,0,0,.06);padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:50}
-  nav button{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;color:var(--grey);cursor:pointer;padding:2px}
-  nav button .ic{font-size:21px;line-height:1}
+  nav button{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--grey);cursor:pointer;padding:2px}
+  nav button .ic{font-size:20px;line-height:1}
   nav button.active{color:var(--green);font-weight:700}
   .empty{text-align:center;color:var(--grey);font-size:13.5px;padding:22px 10px}
   .reset{font-size:11px;color:var(--grey);text-align:center;margin:8px 0 2px;text-decoration:underline;cursor:pointer}
@@ -115,29 +111,33 @@
       </div>
       <div class="goalbar">Marque as refeições abaixo conforme for comendo.</div>
     </div>
-
     <div class="tipbox">🦴 <b>Menopausa:</b> mire ~30g de proteína por refeição — o corpo precisa de mais estímulo pra manter músculo agora. E capriche no cálcio (abaixo) pra proteger os ossos.</div>
-
     <div class="section-title">Refeições de hoje</div>
     <div class="card" id="today-meals"></div>
-
     <div class="section-title">Cálcio do dia 🦴</div>
     <div class="card">
       <div id="calcium-list"></div>
       <div class="goalbar" id="cal-status" style="margin-top:8px"></div>
     </div>
-
     <div class="reset" onclick="resetDay()">Zerar o dia</div>
   </section>
 
   <!-- CARDÁPIO -->
   <section id="tab-menu" class="tab-page">
-    <div class="tipbox">💡 Cada semana tem seu cardápio, com o peixe daquela semana. "Salada" = couve, beterraba ou tomate (folhas quando tiver). Abacate, melão e figo entram como extra <b>quando tiver</b>. Sábado e domingo são livres.</div>
+    <div class="tipbox">💡 Cada semana tem seu cardápio, com o peixe daquela semana. Os pratos usam as receitas da aba <b>Receitas</b>. "Salada" = couve, beterraba ou tomate (folhas quando tiver). Sábado e domingo são livres.</div>
     <div class="section-title" style="margin-top:0">Semana</div>
     <div class="day-pills" id="menu-week-pills"></div>
     <div class="theme-tag" id="menu-theme"></div>
     <div class="day-pills" id="day-pills"></div>
     <div id="menu-content"></div>
+  </section>
+
+  <!-- RECEITAS -->
+  <section id="tab-receitas" class="tab-page">
+    <div class="tipbox">📖 As melhores receitas dos seus PDFs, filtradas pro seu caso: pescetariana, proteína alta e cálcio. 🦴 = boa fonte de cálcio. Filtre por categoria abaixo.</div>
+    <div class="day-pills" id="rec-cat-pills"></div>
+    <div id="rec-list"></div>
+    <div class="tipbox">🐟 <b>Marinadas pro seu peixe/tofu</b> (do PDF de marinadas): shoyu + gengibre + alho · limão + ervas + azeite · mostarda + mel + limão. Deixe marinando e leve à airfryer ou frigideira.</div>
   </section>
 
   <!-- PROGRESSO -->
@@ -169,12 +169,12 @@
       <div id="exam-list"></div>
       <div class="goalbar" style="margin-top:8px">Na menopausa e sem carne vermelha, vale checar estes com seu médico. Marque conforme for fazendo.</div>
     </div>
-    <div class="tipbox">⚠️ Este app é um guia, não substitui médico nem nutricionista. Use os exames pra conversar com um(a) profissional.</div>
+    <div class="tipbox">⚠️ Este app é um guia, não substitui médico nem nutricionista.</div>
   </section>
 
   <!-- COMPRAS -->
   <section id="tab-shop" class="tab-page">
-    <div class="tipbox">🛒 Você faz as compras no <b>domingo</b>, pra semana seguinte (seg a sex). O fim de semana é livre — compre à vontade. Ciclo de 3 meses; cada item mostra a quantidade. Ao fim dos 3 meses, toque em "Renovar ciclo".</div>
+    <div class="tipbox">🛒 Você faz as compras no <b>domingo</b>, pra semana seguinte (seg a sex). Fim de semana livre. Ciclo de 3 meses; cada item mostra a quantidade. Já inclui os ingredientes das receitas.</div>
     <div class="day-pills" id="month-pills"></div>
     <div class="section-title">Compras da semana 🥗</div>
     <div class="day-pills" id="week-pills"></div>
@@ -191,34 +191,29 @@
 <nav>
   <button class="active" data-tab="hoje" onclick="go('hoje',this)"><span class="ic">🎯</span>Hoje</button>
   <button data-tab="menu" onclick="go('menu',this)"><span class="ic">🍽️</span>Cardápio</button>
+  <button data-tab="receitas" onclick="go('receitas',this)"><span class="ic">📖</span>Receitas</button>
   <button data-tab="prog" onclick="go('prog',this)"><span class="ic">📈</span>Progresso</button>
   <button data-tab="shop" onclick="go('shop',this)"><span class="ic">🛒</span>Compras</button>
 </nav>
 
 <script>
-const GOAL = 120;
-const store = {
-  get(k,d){ try{ return JSON.parse(localStorage.getItem('mp_'+k)) ?? d }catch(e){ return d } },
-  set(k,v){ localStorage.setItem('mp_'+k, JSON.stringify(v)) }
-};
-const todayKey = ()=> new Date().toISOString().slice(0,10);
+const GOAL=120;
+const store={get(k,d){try{return JSON.parse(localStorage.getItem('mp_'+k)) ?? d}catch(e){return d}},set(k,v){localStorage.setItem('mp_'+k,JSON.stringify(v))}};
+const todayKey=()=> new Date().toISOString().slice(0,10);
 
-/* ---------- MEALS (today) ---------- */
-const MEALS = [
-  {id:'cafe', name:'Café da manhã', desc:'Iogurte + whey + fruta + aveia', g:30},
-  {id:'almoco',name:'Almoço', desc:'Peixe + carbo + vegetais', g:40},
-  {id:'lanche',name:'Lanche da tarde', desc:'Iogurte grego + fruta', g:15},
-  {id:'jantar',name:'Jantar', desc:'Proteína + muito vegetal', g:35},
+/* ---------- MEALS ---------- */
+const MEALS=[
+  {id:'cafe',name:'Café da manhã',desc:'Pão de aveia + pastinha de atum',g:30},
+  {id:'almoco',name:'Almoço',desc:'Peixe + carbo + vegetais',g:40},
+  {id:'lanche',name:'Lanche da tarde',desc:'Iogurte grego + fruta',g:15},
+  {id:'jantar',name:'Jantar',desc:'Proteína + muito vegetal',g:35},
 ];
 function renderToday(){
-  const day = store.get('day_'+todayKey(), {});
-  const el = document.getElementById('today-meals'); el.innerHTML='';
+  const day=store.get('day_'+todayKey(),{}), el=document.getElementById('today-meals'); el.innerHTML='';
   MEALS.forEach(function(m){
     const on=!!day[m.id];
     const row=document.createElement('div'); row.className='meal-item'+(on?' done':'');
-    row.innerHTML='<div class="check '+(on?'on':'')+'">'+(on?'✓':'')+'</div>'+
-      '<div class="txt"><b>'+m.name+'</b><small>'+m.desc+'</small></div>'+
-      '<div class="g">+'+m.g+'g</div>';
+    row.innerHTML='<div class="check '+(on?'on':'')+'">'+(on?'✓':'')+'</div><div class="txt"><b>'+m.name+'</b><small>'+m.desc+'</small></div><div class="g">+'+m.g+'g</div>';
     row.querySelector('.check').onclick=function(){ day[m.id]=!day[m.id]; store.set('day_'+todayKey(),day); renderToday(); };
     el.appendChild(row);
   });
@@ -238,10 +233,10 @@ function resetDay(){ if(confirm('Zerar as marcações de hoje?')){ store.set('da
 
 /* ---------- CALCIUM ---------- */
 const CAL_SOURCES=[
-  {id:'iog',name:'Iogurte',desc:'~250mg por pote'},
+  {id:'iog',name:'Iogurte / cottage',desc:'~250mg por porção'},
   {id:'couve',name:'Couve refogada',desc:'ótima fonte vegetal'},
   {id:'leite',name:'Leite de amêndoas fortificado',desc:'confira o rótulo'},
-  {id:'gerg',name:'Gergelim / tahine',desc:'no prato ou pão'},
+  {id:'gerg',name:'Gergelim / tahine',desc:'no pão de aveia ou tofu'},
   {id:'peixe',name:'Sardinha ou salmão',desc:'com espinha = mais cálcio'},
   {id:'broc',name:'Brócolis',desc:'bônus de cálcio e fibra'},
 ];
@@ -272,51 +267,86 @@ function renderExams(){
   });
 }
 
+/* ---------- RECEITAS ---------- */
+const RECIPES=[
+  {c:'Café & lanche',n:'Pão de aveia',cal:true,i:'1 ovo, 2 col. sopa de aveia, 1 col. sobremesa de gergelim, sementes de girassol e abóbora.',p:'Bata o ovo, misture o resto, coloque num pote e leve ao micro-ondas por 2 a 3 min (ou airfryer). Recheie com pastinha de atum.'},
+  {c:'Café & lanche',n:'Pastinha de atum',cal:true,i:'1 lata de atum escorrido, 2 col. sopa de azeite, 2 col. sopa de cottage.',p:'Amasse o atum e misture o azeite e o cottage. Ótima no pão de aveia, crepioca ou torrada.'},
+  {c:'Café & lanche',n:'Crepioca com cottage',cal:true,i:'1 ovo, 1 col. sopa de tapioca, 2 col. sopa de cottage.',p:'Bata o ovo, misture a tapioca e o cottage, leve à frigideira antiaderente e doure dos dois lados.'},
+  {c:'Café & lanche',n:'Patê de avocado com ovos',cal:false,i:'1/2 avocado, 2 ovos cozidos picados, limão e sal.',p:'Amasse o avocado com limão e sal, misture os ovos picados. Come com torrada ou de colher.'},
+  {c:'Café & lanche',n:'Panqueca de banana',cal:false,i:'1 ovo, 1 col. sopa de farelo de aveia, 1 banana, canela; pasta de amendoim por cima.',p:'Amasse a banana, misture o ovo, o farelo e a canela, frite. Finalize com pasta de amendoim.'},
+  {c:'Peixe & air fryer',n:'Hambúrguer de atum (airfryer)',cal:false,i:'2 latas de atum, 1 ovo, 1/4 xícara de farinha de grão de bico, cebola picada, sal.',p:'Misture tudo, modele os hambúrgueres. Airfryer a 180°C por 12 min, virando na metade.'},
+  {c:'Peixe & air fryer',n:'Iscas de peixe empanadas',cal:false,i:'400g de filé de peixe em tiras, farinha de grão de bico, alho em pó, sal.',p:'Tempere e empane as tiras. Airfryer a 200°C por 10 min, virando na metade.'},
+  {c:'Peixe & air fryer',n:'Tofu com crosta de gergelim',cal:true,i:'200g de tofu firme em cubos, shoyu, 2 col. sopa de gergelim.',p:'Marine o tofu no shoyu por 10 min, passe no gergelim, airfryer a 180°C por 10 min.'},
+  {c:'Peixe & air fryer',n:'Almôndegas de grão de bico',cal:false,i:'2 xícaras de grão de bico cozido, farinha de grão de bico, alho, cominho, salsinha.',p:'Processe o grão de bico com os temperos, junte a farinha até dar liga, modele e airfryer a 180°C por 15 min.'},
+  {c:'Jantar',n:'Moqueca de ovo',cal:false,i:'2 a 3 ovos, tomate, cebola, pimentão, leite de coco, cúrcuma.',p:'Refogue os legumes com cúrcuma, junte o leite de coco e escalfe os ovos no molho até firmar.'},
+  {c:'Jantar',n:'Croquete de lentilha',cal:false,i:'2 xícaras de lentilha cozida, farinha de aveia, alho, sal.',p:'Processe a lentilha com os temperos, junte a farinha, modele e airfryer a 180°C por 15 min.'},
+  {c:'Jantar',n:'Omelete recheada (airfryer)',cal:false,i:'3 ovos, legumes picados (cenoura, cebola, abobrinha), sal.',p:'Misture tudo num refratário pequeno e leve à airfryer a 180°C por 10 min, até firmar.'},
+  {c:'Sobremesa',n:'Sorvete de papaia proteico',cal:true,i:'Mamão congelado, iogurte grego, 1 scoop de whey.',p:'Bata tudo no processador até cremoso. Come na hora ou leva ao freezer.'},
+  {c:'Sobremesa',n:'Pudim de chia',cal:false,i:'2 col. sopa de chia, 150ml de leite de amêndoas, fruta picada.',p:'Misture a chia com o leite, deixe na geladeira por 2h ou de um dia pro outro. Finalize com fruta.'},
+];
+const REC_CATS=['Todas','Café & lanche','Peixe & air fryer','Jantar','Sobremesa'];
+let selRecCat='Todas';
+function renderRecipes(){
+  const pills=document.getElementById('rec-cat-pills'); pills.innerHTML='';
+  REC_CATS.forEach(function(cat){
+    const b=document.createElement('div'); b.className='pill'+(cat===selRecCat?' active':''); b.textContent=cat;
+    b.onclick=function(){ selRecCat=cat; renderRecipes(); };
+    pills.appendChild(b);
+  });
+  const list=document.getElementById('rec-list'); list.innerHTML='';
+  RECIPES.filter(function(r){ return selRecCat==='Todas'||r.c===selRecCat; }).forEach(function(r){
+    const card=document.createElement('div'); card.className='card rec';
+    const chips='<span class="chip">'+r.c+'</span>'+(r.cal?'<span class="chip cal">🦴 cálcio</span>':'');
+    card.innerHTML='<h4>'+r.n+chips+'</h4><p><b>Ingredientes:</b> '+r.i+'</p><p><b>Preparo:</b> '+r.p+'</p>';
+    list.appendChild(card);
+  });
+}
+
 /* ---------- MENU (por semana) ---------- */
 const DAYS=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
 const THEMES={1:'🐟 Semana 1 — Salmão',2:'🐠 Semana 2 — Peixe branco (o que tiver)',3:'🐡 Semana 3 — Atum / cavala',4:'🥚 Semana 4 — Veg + ovos + tilápia'};
 const CAFE={
-  Seg:['Iogurte grego + aveia + mamão + linhaça + whey','~28g · 340 kcal'],
-  Ter:['Overnight oats: aveia + iogurte + banana + whey','~28g · 350 kcal'],
+  Seg:['Pão de aveia + pastinha de atum','~30g · 380 kcal'],
+  Ter:['Crepioca com cottage + fruta','~24g · 320 kcal'],
   Qua:['Vitamina: whey + banana + aveia + leite de amêndoas + linhaça','~28g · 320 kcal'],
-  Qui:['Iogurte grego + aveia + maçã + sementes + whey','~28g · 350 kcal'],
-  Sex:['Iogurte grego + aveia + mamão + linhaça + whey','~28g · 340 kcal'],
+  Qui:['Panqueca de banana + iogurte grego','~22g · 340 kcal'],
+  Sex:['Pão de aveia + ovos mexidos','~28g · 360 kcal'],
 };
 const LANCHE={
   Seg:['Iogurte grego + fruta + sementes','~15g · 220 kcal'],
-  Ter:['Whey pós-treino + fruta','~26g · 200 kcal'],
-  Qua:['Iogurte grego + pasta de amendoim','~16g · 230 kcal'],
-  Qui:['Iogurte grego + fruta','~12g · 180 kcal'],
+  Ter:['Patê de avocado com ovo cozido','~12g · 220 kcal'],
+  Qua:['Pastinha de atum + torrada integral','~18g · 200 kcal'],
+  Qui:['Iogurte grego + pudim de chia','~14g · 200 kcal'],
   Sex:['Whey pós-treino','~24g · 130 kcal'],
 };
 const MENUS={
   1:{
-    Seg:{almoco:['Salmão + arroz integral + couve refogada + beterraba','~40g · 550 kcal'],jantar:['Tilápia + purê de abóbora + brócolis + salada de couve','~32g · 380 kcal']},
-    Ter:{almoco:['Salmão + batata doce + brócolis + salada de couve','~40g · 540 kcal'],jantar:['2 ovos + grão de bico + abóbora + salada de couve','~28g · 360 kcal']},
-    Qua:{almoco:['Sardinha + arroz integral + couve + beterraba','~30g · 480 kcal'],jantar:['Sopa de vegetais + grão de bico + 2 ovos','~26g · 340 kcal']},
-    Qui:{almoco:['Salmão + batata doce + couve + beterraba','~40g · 540 kcal'],jantar:['Tilápia desfiada + purê de abóbora + salada de couve','~30g · 380 kcal']},
-    Sex:{almoco:['Tilápia + arroz integral + brócolis + beterraba','~38g · 510 kcal'],jantar:['Omelete de vegetais (2 ovos) + abóbora','~26g · 320 kcal']},
+    Seg:{almoco:['Salmão (marinada de limão e ervas) + arroz integral + couve + beterraba','~40g · 550 kcal'],jantar:['Hambúrguer de atum (airfryer) + salada de couve','~34g · 400 kcal']},
+    Ter:{almoco:['Salmão + batata doce + brócolis + salada','~40g · 540 kcal'],jantar:['Moqueca de ovo + arroz integral (pouco)','~26g · 360 kcal']},
+    Qua:{almoco:['Sardinha + arroz integral + couve + beterraba','~30g · 480 kcal'],jantar:['Sopa de vegetais + croquete de lentilha','~24g · 350 kcal']},
+    Qui:{almoco:['Salmão + batata doce + couve + beterraba','~40g · 540 kcal'],jantar:['Tofu com crosta de gergelim + legumes salteados','~28g · 380 kcal']},
+    Sex:{almoco:['Tilápia + arroz integral + brócolis + beterraba','~38g · 510 kcal'],jantar:['Omelete recheada (airfryer) + purê de abóbora','~24g · 340 kcal']},
   },
   2:{
-    Seg:{almoco:['Peixe branco (pescada/tilápia) assado + arroz integral + couve + beterraba','~38g · 520 kcal'],jantar:['Tilápia + brócolis + purê de abóbora','~32g · 380 kcal']},
-    Ter:{almoco:['Peixe branco + batata doce + brócolis + salada de couve','~38g · 500 kcal'],jantar:['2 ovos + grão de bico + abóbora','~28g · 360 kcal']},
-    Qua:{almoco:['Sardinha + arroz integral + couve + beterraba','~30g · 480 kcal'],jantar:['Sopa de vegetais + grão de bico + 2 ovos','~26g · 340 kcal']},
-    Qui:{almoco:['Peixe branco + batata doce + couve + beterraba','~38g · 520 kcal'],jantar:['Peixe branco desfiado + salada + purê de abóbora','~30g · 380 kcal']},
-    Sex:{almoco:['Peixe branco + arroz integral + brócolis + beterraba','~38g · 500 kcal'],jantar:['Omelete de vegetais (2 ovos) + abóbora','~26g · 320 kcal']},
+    Seg:{almoco:['Peixe branco (marinada shoyu + gengibre) + arroz + couve','~38g · 520 kcal'],jantar:['Almôndegas de grão de bico + salada de couve','~24g · 380 kcal']},
+    Ter:{almoco:['Iscas de peixe empanadas (airfryer) + batata doce + salada','~38g · 520 kcal'],jantar:['2 ovos + grão de bico + abóbora','~28g · 360 kcal']},
+    Qua:{almoco:['Sardinha + arroz integral + couve + beterraba','~30g · 480 kcal'],jantar:['Sopa de vegetais + croquete de lentilha','~24g · 350 kcal']},
+    Qui:{almoco:['Peixe branco + batata doce + couve + beterraba','~38g · 520 kcal'],jantar:['Patê de atum + crepioca + salada','~26g · 360 kcal']},
+    Sex:{almoco:['Peixe branco + arroz integral + brócolis + beterraba','~38g · 500 kcal'],jantar:['Tofu com crosta de gergelim + legumes','~28g · 380 kcal']},
   },
   3:{
-    Seg:{almoco:['Atum grelhado + arroz integral + brócolis + beterraba','~42g · 540 kcal'],jantar:['Tilápia + couve + purê de abóbora','~32g · 380 kcal']},
-    Ter:{almoco:['Cavala assada + batata doce + couve + salada de beterraba','~40g · 560 kcal'],jantar:['Edamame + 2 ovos + abóbora + salada de couve','~30g · 380 kcal']},
+    Seg:{almoco:['Atum grelhado + arroz integral + brócolis + beterraba','~42g · 540 kcal'],jantar:['Hambúrguer de atum (airfryer) + salada','~34g · 400 kcal']},
+    Ter:{almoco:['Cavala assada + batata doce + couve + salada','~40g · 560 kcal'],jantar:['Moqueca de ovo + salada de couve','~26g · 360 kcal']},
     Qua:{almoco:['Sardinha + arroz integral + couve + beterraba','~30g · 480 kcal'],jantar:['Sopa de vegetais + grão de bico','~20g · 320 kcal']},
-    Qui:{almoco:['Atum + batata doce + brócolis + salada de couve','~42g · 540 kcal'],jantar:['Tofu grelhado + legumes + grão de bico','~28g · 380 kcal']},
-    Sex:{almoco:['Cavala + arroz integral + couve + beterraba','~40g · 540 kcal'],jantar:['Omelete de vegetais (2 ovos) + abóbora','~26g · 320 kcal']},
+    Qui:{almoco:['Atum + batata doce + brócolis + salada','~42g · 540 kcal'],jantar:['Tofu com crosta de gergelim + legumes','~28g · 380 kcal']},
+    Sex:{almoco:['Cavala + arroz integral + couve + beterraba','~40g · 540 kcal'],jantar:['Omelete recheada (airfryer) + abóbora','~24g · 340 kcal']},
   },
   4:{
-    Seg:{almoco:['Tilápia + arroz integral + couve + beterraba','~38g · 510 kcal'],jantar:['Tofu + brócolis + grão de bico','~26g · 360 kcal']},
-    Ter:{almoco:['Omelete (3 ovos) + grão de bico + batata doce + salada','~34g · 520 kcal'],jantar:['Edamame + abóbora + salada de couve','~22g · 320 kcal']},
-    Qua:{almoco:['Tilápia + arroz integral + brócolis + beterraba','~38g · 510 kcal'],jantar:['Sopa de vegetais + grão de bico + 2 ovos','~26g · 340 kcal']},
-    Qui:{almoco:['Tofu grelhado + batata doce + couve + beterraba','~28g · 480 kcal'],jantar:['Sardinha + salada de couve + purê de abóbora','~26g · 380 kcal']},
-    Sex:{almoco:['Tilápia + arroz integral + couve + salada','~38g · 510 kcal'],jantar:['Omelete de vegetais (2 ovos) + abóbora','~26g · 320 kcal']},
+    Seg:{almoco:['Tilápia + arroz integral + couve + beterraba','~38g · 510 kcal'],jantar:['Almôndegas de grão de bico + salada','~24g · 380 kcal']},
+    Ter:{almoco:['Omelete (3 ovos) + grão de bico + batata doce + salada','~34g · 520 kcal'],jantar:['Tofu com crosta de gergelim + legumes','~28g · 380 kcal']},
+    Qua:{almoco:['Tilápia + arroz integral + brócolis + beterraba','~38g · 510 kcal'],jantar:['Moqueca de ovo + salada de couve','~26g · 360 kcal']},
+    Qui:{almoco:['Croquete de lentilha + batata doce + couve + salada','~24g · 480 kcal'],jantar:['Sardinha + salada de couve + purê de abóbora','~26g · 380 kcal']},
+    Sex:{almoco:['Tilápia + arroz integral + couve + salada','~38g · 510 kcal'],jantar:['Omelete recheada (airfryer) + abóbora','~24g · 340 kcal']},
   },
 };
 const MEALLABEL={cafe:'☕ Café da manhã (pós-treino)',almoco:'🍽️ Almoço',lanche:'🍎 Lanche',jantar:'🌙 Jantar'};
@@ -392,25 +422,28 @@ function drawChart(logs){
   ctx.fillText(pesos[0]+'kg',x(0),y(pesos[0])-8); ctx.fillText(pesos[pesos.length-1]+'kg',x(logs.length-1),y(pesos[pesos.length-1])-8);
 }
 
-/* ---------- SHOPPING (3 meses) ---------- */
+/* ---------- SHOPPING ---------- */
 const WEEKLY=[
-  ['Salmão','2 postas (~300g)'],['Tilápia','3 filés (~450g)'],['Ovos','1½–2 dúzias'],['Edamame / tofu','1 pacote'],
+  ['Salmão','2 postas (~300g)'],['Tilápia','3 filés (~450g)'],['Ovos','2 dúzias'],['Edamame / tofu','1 pacote'],
+  ['Queijo cottage','1 pote'],['Queijo (muçarela/meia cura)','1 peça pequena'],
   ['Iogurte grego','1 pote grande (500g) ou 7 unid.'],['Leite de amêndoas','1 caixa (1L)'],
   ['Mamão','1 unidade'],['Banana','1 penca (~7)'],['Maçã','4–5 unidades'],
-  ['Abacate','1–2 unidades'],['Melão','1 unidade'],['Figo','1 caixinha (quando tiver)'],
+  ['Abacate','1–2 unidades'],['Melão','1 unidade'],['Figo','1 caixinha (quando tiver)'],['Morango congelado','1 pacote (sobremesa)'],
   ['Couve','1 maço'],['Brócolis','1 maço ou 1 pct congelado'],['Abóbora','1 pedaço (~500g)'],['Beterraba','3–4 unidades'],
-  ['Legumes p/ sopa','cenoura, abobrinha, chuchu (2–3 de cada)'],['Folhas p/ salada','1–2 pés/maços'],['Tomate','4–5 unidades'],['Pepino','2–3 unidades'],
+  ['Legumes p/ sopa','cenoura, abobrinha, chuchu (2–3 de cada)'],['Gengibre','1 pedaço'],['Folhas p/ salada','1–2 pés/maços'],['Tomate','4–5 unidades'],['Pepino','2–3 unidades'],
 ];
 const PANTRY=[
-  ['Arroz integral','1 pacote (1kg)'],['Batata doce','~1,5–2 kg'],['Grão de bico','2 pacotes ou 4 latas'],['Aveia','1 pacote (500g)'],
-  ['Linhaça','1 pacote (250g)'],['Sementes girassol/abóbora','1 pacote de cada'],['Castanhas','1 pacote (200g)'],['Azeite','1 garrafa'],
-  ['Gergelim / tahine','1 pote'],['Sardinha em lata','4–6 latas'],['Pasta de amendoim','1 pote'],['Temperos naturais','conforme'],
+  ['Arroz integral','1 pacote (1kg)'],['Batata doce','~1,5–2 kg'],['Grão de bico','2 pacotes ou 4 latas'],['Lentilha','1 pacote'],
+  ['Aveia','1 pacote (500g)'],['Farinha de aveia','1 pacote'],['Farinha de grão de bico','1 pacote'],['Tapioca','1 pacote'],
+  ['Linhaça','1 pacote (250g)'],['Chia','1 pacote (250g)'],['Sementes girassol/abóbora','1 pacote de cada'],['Castanhas','1 pacote (200g)'],
+  ['Atum em lata','4–6 latas'],['Sardinha em lata','4–6 latas'],['Azeite','1 garrafa'],['Gergelim / tahine','1 pote'],['Pasta de amendoim','1 pote'],
+  ['Cúrcuma (açafrão)','1 pote'],['Shoyu','1 vidro'],['Leite de coco','1 caixa'],['Temperos naturais','conforme'],
 ];
 const WEEK_SUGGEST=[
-  'Semana do salmão: salmão 2x + 1 sardinha. Abacate/melão de sobremesa (se tiver). Mantenha iogurte e linhaça (bom pro intestino).',
-  'Semana do peixe branco: pescada, tilápia ou o que tiver, sardinha nas latas, figo no lanche. Sopa de vegetais 1x.',
-  'Semana do atum/cavala: atum ou cavala (ricos em ômega 3), edamame no jantar, abacate/melão se tiver.',
-  'Semana veg + ovos: tofu/edamame e ovos variados, tilápia 2x, figo e iogurte de sobremesa. Capriche na fibra e água.',
+  'Semana do salmão: salmão 2x + 1 sardinha. Hambúrguer de atum e tofu com gergelim no jantar. Abacate/melão de sobremesa (se tiver).',
+  'Semana do peixe branco: pescada, tilápia ou o que tiver, iscas empanadas na airfryer, sardinha nas latas. Sopa + croquete de lentilha 1x.',
+  'Semana do atum/cavala: atum ou cavala (ricos em ômega 3), moqueca de ovo, tofu com gergelim, edamame. Sorvete de papaia de sobremesa.',
+  'Semana veg + ovos: tofu, ovos e tilápia, almôndegas de grão de bico e croquete de lentilha. Capriche na fibra e água.',
 ];
 let selMonth=1, selWeek=1;
 function pill(label,active,onClick){ const b=document.createElement('div'); b.className='pill'+(active?' active':''); b.textContent=label; b.onclick=onClick; return b; }
@@ -449,7 +482,7 @@ function go(tab,btn){
 }
 
 /* init */
-renderToday(); renderCalcium(); renderMenu(); renderProg(); renderExams(); renderShopAll();
+renderToday(); renderCalcium(); renderMenu(); renderRecipes(); renderProg(); renderExams(); renderShopAll();
 window.addEventListener('resize',function(){ if(document.getElementById('tab-prog').classList.contains('active')) renderProg(); });
 </script>
 </body>
